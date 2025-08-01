@@ -2,14 +2,16 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static('public')); // ← agar koi static file ho future me
+app.use(express.static('public')); // ← future static files ke liye
 
 app.get('/', (req, res) => {
-  // Shopify app install ke baad yahi route dikhta hai
+  // Shopify app install ke baad yeh route chalega
   res.send(`
     <html>
       <head>
         <title>Auto Discount App</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script src="https://unpkg.com/@shopify/app-bridge@3"></script>
       </head>
       <body>
@@ -18,7 +20,7 @@ app.get('/', (req, res) => {
           const AppBridge = window['app-bridge'];
           const createApp = AppBridge.default;
           const app = createApp({
-            apiKey: '76618cf077e5143dcf1460d096d6580a', // <-- yahan aapki actual API Key aayegi
+            apiKey: '76618cf077e5143dcf1460d096d6580a', // ✅ Aapki actual API key
             host: new URLSearchParams(window.location.search).get('host'),
             forceRedirect: true,
           });
