@@ -1,46 +1,38 @@
-require('dotenv').config();
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-const SHOPIFY_API_KEY = process.env.SHOPIFY_API_KEY;
-const SHOPIFY_API_SECRET = process.env.SHOPIFY_API_SECRET;
-const SCOPES = process.env.SCOPES;
-const APP_URL = process.env.APP_URL;
-
 app.get('/', (req, res) => {
-  const shop = req.query.shop || 'Unknown';
+  const shop = req.query.shop;
+  const host = req.query.host;
+
+  if (!shop || !host) {
+    return res.status(400).send('Missing shop or host');
+  }
+
   res.send(`
+    <!DOCTYPE html>
     <html>
       <head>
         <title>Auto Discount App</title>
+        <script src="https://unpkg.com/@shopify/app-bridge@3"></script>
+        <script src="https://unpkg.com/@shopify/app-bridge-utils@3"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
-        <h2>🎉 Auto Discount App Installed Successfully!</h2>
+        <h1>🎉 Auto Discount App Loaded Inside Admin</h1>
         <p>Store: ${shop}</p>
+        <script>
+          const AppBridge = window['app-bridge'];
+          const createApp = AppBridge.default;
+          const actions = AppBridge.actions;
+
+          const app = createApp({
+            apiKey: '${SHOPIFY_API_KEY}',
+            host: '${host}',
+            forceRedirect: true
+          });
+
+          const TitleBar = actions.TitleBar;
+          TitleBar.create(app, { title: "Auto Discount App" });
+        </script>
       </body>
     </html>
   `);
-});
-
-app.get('/auth', (req, res) => {
-  const shop = req.query.shop;
-  if (!shop) return res.status(400).send('Missing shop parameter.');
-
-  const redirectUri = `${APP_URL}/auth/callback`;
-  const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${SHOPIFY_API_KEY}&scope=${SCOPES}&redirect_uri=${redirectUri}`;
-  
-  res.redirect(installUrl);
-});
-
-app.get('/auth/callback', (req, res) => {
-  const { shop, code } = req.query;
-  if (!shop || !code) return res.status(400).send('Missing shop or code.');
-  
-  // Token exchange logic should go here
-  res.redirect(`/?shop=${shop}`);
-});
-
-app.listen(PORT, () => {
-  console.log(`App is running at http://localhost:${PORT}`);
 });
