@@ -6,7 +6,7 @@ app.get('/', (req, res) => {
     return res.status(400).send('Missing shop or host');
   }
 
-  res.send(`
+  res.send(
     <!DOCTYPE html>
     <html>
       <head>
@@ -34,5 +34,5 @@ app.get('/', (req, res) => {
         </script>
       </body>
     </html>
-  `);
+  );
 });
