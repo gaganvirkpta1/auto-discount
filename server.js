@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
           const actions = AppBridge.actions;
 
           const app = createApp({
-            apiKey: '${process.env.SHOPIFY_API_KEY}',
+            apiKey: '${SHOPIFY_API_KEY}',
             host: '${host}',
             forceRedirect: true
           });
