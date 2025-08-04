@@ -1,0 +1,12 @@
+name = "Auto Discount"
+client_id = "76618cf077e5143dcf1460d096d6580a"
+application_url = "https://auto-discount.onrender.com"
+embedded = true
+
+[access_scopes]
+scopes = "read_products,write_discounts"
+
+[[extensions]]
+type = "admin_link"
+name = "Auto Discount"
+url = "https://auto-discount.onrender.com?shop={{shop}}&host={{host}}"
