@@ -1,12 +1,21 @@
-name = "Auto Discount"
-client_id = "76618cf077e5143dcf1460d096d6580a"
-application_url = "https://auto-discount.onrender.com"
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "aee499c51bae5943873b22bc91318d7f"
+name = "Auto Discount app"
+handle = "auto-discount-app-2"
+application_url = "https://auto-discount.onrender.com/"
 embedded = true
 
-[access_scopes]
-scopes = "read_products,write_discounts"
+[webhooks]
+api_version = "2025-07"
 
-[[extensions]]
-type = "admin_link"
-name = "Auto Discount"
-url = "https://auto-discount.onrender.com?shop={{shop}}&host={{host}}"
+[auth]
+redirect_urls = [ "https://auto-discount.onrender.com/auth/callback" ]
+
+[app_proxy]
+url = "https://auto-discount.onrender.com/proxy"
+subpath = "auto-discount"
+prefix = "apps"
+
+[pos]
+embedded = true
